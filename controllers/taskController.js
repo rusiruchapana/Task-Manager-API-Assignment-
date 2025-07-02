@@ -19,10 +19,19 @@ const createTask = async (req,res)=>{
     }
 }
 
+const getTasks = async (req,res) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).json({ success: true,data: tasks });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
 
 
 
 
 
-module.exports = {createTask};
+
+module.exports = {createTask, getTasks};
 
