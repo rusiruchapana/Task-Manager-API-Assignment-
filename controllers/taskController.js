@@ -44,9 +44,33 @@ const getTaskById = async (req,res) => {
 };
 
 
+const updateTask = async (req,res) => {
+  try {
+    const { title, description, status } = req.body;
+    
+
+    if (!title || !description) {
+      return res.status(400).json({ success: false, error: 'Please provide title and description' });
+    }
+
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title, description, status },
+      { new: true, runValidators: true }
+    );
+
+    if (!task) {
+      return res.status(404).json({ success: false, error: 'Task not found' });
+    }
+
+    res.status(200).json({ success: true, data: task });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
 
 
 
 
-module.exports = {createTask, getTasks, getTaskById};
+module.exports = {createTask, getTasks, getTaskById, updateTask};
 
